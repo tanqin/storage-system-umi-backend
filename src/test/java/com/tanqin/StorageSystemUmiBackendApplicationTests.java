@@ -1,4 +1,4 @@
-package com.tanqin.storagesystemumibackend;
+package com.tanqin;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

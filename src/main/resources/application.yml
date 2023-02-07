@@ -1,0 +1,19 @@
+# 项目端口
+server:
+  port: 8080
+
+# 数据库配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql:///storage_system?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: root
+
+# MybatisPlus 配置
+mybatis-plus:
+  configuration:
+    # 开启打印 sql 配置
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 开启下划线转驼峰配置
+    map-underscore-to-camel-case: true
