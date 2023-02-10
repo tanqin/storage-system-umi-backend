@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -23,6 +24,7 @@ import java.io.Serializable;
 @Setter
 @TableName("t_user")
 @ApiModel(value = "User对象", description = "")
+@JsonIgnoreProperties(value = {"password", "isValid"})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,5 +56,6 @@ public class User implements Serializable {
     private Byte roleId;
 
     @ApiModelProperty("账号是否有效(0: 无效; 1: 有效)")
+    @TableField(select = false)
     private Byte isValid;
 }

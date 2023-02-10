@@ -59,6 +59,11 @@
       <artifactId>spring-boot-starter-swagger</artifactId>
       <version>1.5.1.RELEASE</version>
     </dependency>
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <version>4.2.1</version>
+    </dependency>
   </dependencies>
 
   <build>

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tanqin.common.JwtUtil;
 import com.tanqin.entity.QueryPageParams;
 import com.tanqin.entity.Result;
 import com.tanqin.entity.User;
@@ -37,8 +38,9 @@ public class UserController {
                 .eq(User::getPassword, user.getPassword())
                 .list();
         if (list.size() > 0) {
+            String token = JwtUtil.sign(user.getUsername(), user.getPassword());
             Map map = new HashMap();
-            map.put("userInfo", list.get(0));
+            map.put("token", token);
             return Result.success(map);
         }
         return Result.fail();

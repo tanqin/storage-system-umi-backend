@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tanqin.mapper.UserMapper">
   <select id="pageQuery" resultType="com.tanqin.entity.User">
-    select *
+    select id, username, nickname, age, sex, phone, role_id
     from t_user ${ew.customSqlSegment}
   </select>
 </mapper>
