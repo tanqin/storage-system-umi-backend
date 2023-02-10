@@ -9,5 +9,5 @@ public class StorageSystemUmiBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(StorageSystemUmiBackendApplication.class, args);
     }
-
+    
 }
