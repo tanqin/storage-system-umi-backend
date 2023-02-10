@@ -9,10 +9,7 @@ import com.tanqin.entity.Result;
 import com.tanqin.entity.User;
 import com.tanqin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -87,5 +84,17 @@ public class UserController {
         IPage result = userService.pageQuery(page, lambdaQueryWrapper);
 
         return Result.success(result.getRecords(), result.getTotal());
+    }
+
+    // 更新用户信息
+    @PutMapping("/update")
+    public Result update(@RequestBody User user) {
+        return userService.updateById(user) ? Result.success() : Result.fail();
+    }
+
+    // 删除用户
+    @DeleteMapping("/delete/{id}")
+    public Result delete(@PathVariable("id") Integer id) {
+        return userService.removeById(id) ? Result.success() : Result.fail();
     }
 }
