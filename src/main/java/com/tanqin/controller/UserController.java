@@ -38,7 +38,7 @@ public class UserController {
                 .eq(User::getPassword, user.getPassword())
                 .list();
         if (list.size() > 0) {
-            String token = JwtUtil.sign(user.getUsername(), user.getPassword());
+            String token = JwtUtil.sign(list.get(0));
             Map map = new HashMap();
             map.put("token", token);
             return Result.success(map);

@@ -1,6 +1,7 @@
 package com.tanqin;
 
 import com.tanqin.common.JwtUtil;
+import com.tanqin.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -13,9 +14,10 @@ class StorageSystemUmiBackendApplicationTests {
 
     @Test
     void generateToken() {
-        String username = "admin";
-        String password = "admin";
-        String token = JwtUtil.sign(username, password);
+        User user = new User();
+        user.setUsername("admin");
+        user.setPassword("admin");
+        String token = JwtUtil.sign(user);
         System.out.println(token);
     }
 
