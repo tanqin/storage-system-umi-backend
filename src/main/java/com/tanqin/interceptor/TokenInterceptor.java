@@ -2,6 +2,7 @@ package com.tanqin.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tanqin.common.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -10,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
+    @Autowired
+    private HttpServletResponse httpServletResponse;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (request.getMethod().equals("OPTIONS")) {
@@ -28,6 +32,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
         try {
+            httpServletResponse.setStatus(401);
             JSONObject json = new JSONObject();
             json.put("msg", "用户验签已失效，请重新登录！");
             json.put("code", 401);

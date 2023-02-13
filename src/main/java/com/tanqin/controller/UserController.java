@@ -44,12 +44,19 @@ public class UserController {
                     .eq(User::getPassword, user.getPassword())
                     .list();
             if (list.size() > 0) {
-                String token = JwtUtil.sign(list.get(0));
-                Map map = new HashMap();
-                map.put("token", token);
-                return Result.success(map);
+                User userInfo = list.get(0);
+                Boolean isValid = userInfo.getIsValid();
+                if (isValid) {
+
+                    String token = JwtUtil.sign(list.get(0));
+                    Map map = new HashMap();
+                    map.put("token", token);
+                    return Result.success(map);
+                } else {
+                    return Result.fail("账号已暂停使用，请联系管理员！", 401);
+                }
             } else {
-                return Result.fail("用户名或密码错误!");
+                return Result.fail("用户名或密码错误!", 401);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -54,6 +54,5 @@ public class User implements Serializable {
     private Byte roleId;
 
     @ApiModelProperty("账号是否有效(0: 无效; 1: 有效)")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Byte isValid;
+    private Boolean isValid;
 }

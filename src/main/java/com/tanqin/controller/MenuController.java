@@ -68,8 +68,28 @@ public class MenuController {
         return Result.fail();
     }
 
+    /**
+     * @param menu
+     * @return
+     * @desc 添加或修改菜单
+     */
     @PostMapping("/saveOrUpdate")
     public Result saveOrUpdate(@RequestBody Menu menu) {
         return Result.success(menuService.saveOrUpdate(menu));
+    }
+
+    /**
+     * @param id
+     * @return
+     * @desc 根据 id 删除菜单项
+     */
+    @DeleteMapping("/delete/{id}")
+    public Result delete(@PathVariable("id") Integer id) {
+        User user = JwtUtil.parseJWT();
+        if (user.getRoleId() == 0) {
+            boolean flag = menuService.removeById(id);
+            return flag ? Result.success() : Result.fail();
+        }
+        return Result.fail();
     }
 }
