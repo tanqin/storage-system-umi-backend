@@ -12,6 +12,8 @@ import com.tanqin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,20 +32,31 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private HttpServletRequest request;
+
     // 登录
     @PostMapping("/login")
-    public Result login(@RequestBody User user) {
-        List<User> list = userService.lambdaQuery()
-                .eq(User::getUsername, user.getUsername())
-                .eq(User::getPassword, user.getPassword())
-                .list();
-        if (list.size() > 0) {
-            String token = JwtUtil.sign(list.get(0));
-            Map map = new HashMap();
-            map.put("token", token);
-            return Result.success(map);
+    public Result login(@RequestBody User user, HttpServletResponse response) {
+        try {
+            List<User> list = userService.lambdaQuery()
+                    .eq(User::getUsername, user.getUsername())
+                    .eq(User::getPassword, user.getPassword())
+                    .list();
+            if (list.size() > 0) {
+                String token = JwtUtil.sign(list.get(0));
+                Map map = new HashMap();
+                map.put("token", token);
+                return Result.success(map);
+            } else {
+                return Result.fail("用户名或密码错误!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Integer statusCode = 500;
+            response.setStatus(statusCode);
+            return Result.fail(e.getMessage(), statusCode);
         }
-        return Result.fail();
     }
 
     // 注册
@@ -58,6 +71,16 @@ public class UserController {
         }
         userService.save(user);
         return Result.success("注册成功！");
+    }
+
+    // 获取用户信息
+    @GetMapping("/info")
+    public Result info() {
+        User baseUserInfo = JwtUtil.parseJWT();
+
+        User user = userService.getById(baseUserInfo.getId());
+        System.out.println(user);
+        return user != null ? Result.success(user) : Result.fail();
     }
 
     // 分页查询
@@ -81,6 +104,20 @@ public class UserController {
             lambdaQueryWrapper.and(wrapper -> wrapper.eq(User::getRoleId, params.get("roleId")));
         }
 
+        String token = request.getHeader("Authorization");
+        User user = JwtUtil.parseJWT(token);
+
+        if (user.getId() == 1 && user.getRoleId() == 0) {
+            // 超级管理员
+            lambdaQueryWrapper.orderByAsc(User::getRoleId);
+        } else if (user.getRoleId() == 1) {
+            // 管理员
+            lambdaQueryWrapper.and(wrapper -> wrapper.eq(User::getRoleId, 2));
+        } else {
+            return Result.fail();
+        }
+
+
         IPage<User> page = new Page<>(pageNum, pageSize);
 
         IPage result = userService.pageQuery(page, lambdaQueryWrapper);
@@ -91,12 +128,25 @@ public class UserController {
     // 更新用户信息
     @PutMapping("/update")
     public Result update(@RequestBody User user) {
+
         return userService.updateById(user) ? Result.success() : Result.fail();
     }
 
     // 删除用户
     @DeleteMapping("/delete/{id}")
     public Result delete(@PathVariable("id") Integer id) {
+        String token = request.getHeader("Authorization");
+        User user = JwtUtil.parseJWT(token);
+        if (id == 1 || user.getRoleId() == 2) {
+            return Result.fail("操作失败，你没有该操作权限！");
+        } else if (user.getRoleId() == 1) {
+            // 不能删除与自己同级别的用户
+            User willDeleteUser = userService.getById(id);
+            Byte willDeleteUserRoleId = willDeleteUser.getRoleId();
+            if (user.getRoleId() == willDeleteUserRoleId) {
+                return Result.fail("操作失败，你没有该操作权限！");
+            }
+        }
         return userService.removeById(id) ? Result.success() : Result.fail();
     }
 }

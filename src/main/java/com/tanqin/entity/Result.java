@@ -31,6 +31,11 @@ public class Result {
         return Result.result(400, message, 0L, null);
     }
 
+    // 失败(2 个参数)
+    public static Result fail(String message, Integer code) {
+        return Result.result(code, message, 0L, null);
+    }
+
     // 成功（0 个参数）
     public static Result success() {
         return Result.result(200, "操作成功", 0L, null);
