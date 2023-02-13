@@ -3,15 +3,16 @@ package com.tanqin.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author tanqin
@@ -49,4 +50,7 @@ public class Menu implements Serializable {
 
     @ApiModelProperty("菜单所需权限(0: 超级管理员; 1: 管理员; 2: 普通用户), 可使用逗号分割权限(如: \"0,1,2\")")
     private String roleIds;
+
+    @ApiModelProperty("菜单是否生效(0: 无效; 1: 有效)")
+    private Boolean isValid;
 }
