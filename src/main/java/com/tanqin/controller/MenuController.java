@@ -37,7 +37,7 @@ public class MenuController {
     @GetMapping("/auth")
     public Result auth() {
         User user = JwtUtil.parseJWT();
-        List<Menu> list = menuService.lambdaQuery().like(Menu::getRoleIds, user.getRoleId()).eq(Menu::getIsValid, true).list();
+        List<Menu> list = menuService.lambdaQuery().like(Menu::getRoleIds, user.getRoleId()).eq(Menu::getIsValid, true).orderByAsc(Menu::getLevel).list();
         return Result.success(list);
     }
 
