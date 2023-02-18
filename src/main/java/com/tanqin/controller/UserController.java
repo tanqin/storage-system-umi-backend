@@ -10,6 +10,7 @@ import com.tanqin.entity.Result;
 import com.tanqin.entity.User;
 import com.tanqin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,14 +54,14 @@ public class UserController {
                     map.put("token", token);
                     return Result.success(map);
                 } else {
-                    return Result.fail("账号已暂停使用，请联系管理员！", 401);
+                    return Result.fail("账号已暂停使用，请联系管理员！", HttpStatus.FORBIDDEN.value());
                 }
             } else {
-                return Result.fail("用户名或密码错误!", 401);
+                return Result.fail("用户名或密码错误!", HttpStatus.UNAUTHORIZED.value());
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Integer statusCode = 500;
+            int statusCode = HttpStatus.INTERNAL_SERVER_ERROR.value();
             response.setStatus(statusCode);
             return Result.fail(e.getMessage(), statusCode);
         }

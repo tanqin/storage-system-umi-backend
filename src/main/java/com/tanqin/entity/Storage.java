@@ -1,17 +1,19 @@
 package com.tanqin.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author tanqin
@@ -37,4 +39,12 @@ public class Storage implements Serializable {
 
     @ApiModelProperty("是否生效(0: 关闭, 1: 开启)")
     private Boolean isValid;
+
+    @ApiModelProperty("种类数量")
+    @TableField(exist = false)
+    private Integer kindCount;
+
+    @ApiModelProperty("物品数量")
+    @TableField(exist = false)
+    private Integer goodsCount;
 }

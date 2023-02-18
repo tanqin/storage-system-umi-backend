@@ -2,7 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tanqin.mapper.StorageMapper">
   <select id="pageQuery" resultType="com.tanqin.entity.Storage">
-    select *
-    from t_storage ${ew.customSqlSegment}
+    SELECT s.*,
+           COUNT(DISTINCT sk.kind_id)  AS kind_count,
+           COUNT(DISTINCT kg.goods_id) AS goods_count
+    FROM t_storage AS s
+           LEFT JOIN
+         t_storage_kind AS sk ON s.id = sk.storage_id
+           LEFT JOIN
+         t_kind_goods AS kg ON sk.kind_id = kg.kind_id
+           LEFT JOIN
+         t_kind AS k ON sk.kind_id = k.id
+           LEFT JOIN
+         t_goods AS g ON kg.goods_id = g.id
+      ${ew.customSqlSegment}
+    GROUP BY
+      s.id
   </select>
 </mapper>
