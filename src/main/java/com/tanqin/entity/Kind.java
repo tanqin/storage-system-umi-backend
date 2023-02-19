@@ -3,15 +3,16 @@ package com.tanqin.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author tanqin
@@ -28,9 +29,6 @@ public class Kind implements Serializable {
     @ApiModelProperty("主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-
-    @ApiModelProperty("所属仓库 id")
-    private Integer storageId;
 
     @ApiModelProperty("种类名称")
     private String name;

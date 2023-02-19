@@ -57,8 +57,8 @@ public class InventoryController {
             LambdaQueryWrapper<Inventory> lambdaQueryWrapper = new LambdaQueryWrapper<>();
             if (StringUtils.isNotBlank(queryString)) {
                 // 添加请求条件
-                lambdaQueryWrapper.like(Inventory::getItemNumber, queryString)
-                        .or().like(Inventory::getItemName, queryString)
+                lambdaQueryWrapper.like(Inventory::getGoodsCode, queryString)
+                        .or().like(Inventory::getGoodsName, queryString)
                         .or().like(Inventory::getLocation, queryString);
             }
             if (params.get("status") != null) {
